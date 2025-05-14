@@ -2,17 +2,20 @@
 class DB
 {
     private static $connection;
+
     public static function getConnection()
     {
         if (!self::$connection) {
-            $connectionString = "mysql:dbname=".DATABASE_NAME.";host=localhost";
+            $connectionString = "mysql:host=" . DATABASE_HOST . 
+                                ";port=" . DATABASE_PORT . 
+                                ";dbname=" . DATABASE_NAME;
             self::$connection = new PDO($connectionString, DATABASE_USERNAME, DATABASE_PASSWORD);
         }
 
         return self::$connection;
     }
-    
 }
+
 
 
 function findUser($username){

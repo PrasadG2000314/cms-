@@ -10,6 +10,9 @@
 </head>
 <body>
     <h2>login form</h2>
+    <div class="">
+        <?php echo returnLoginerror(); ?>
+    </div>
     <form class="" action="process_login.php" method="post">
         <div class="form-group">
             <label for="username">Username:</label>

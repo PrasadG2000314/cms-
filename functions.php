@@ -40,15 +40,54 @@ function validateLogin($details){
     $errors = [];
 
     foreach($toBeValidated as $input){
+        var_dump(isset($details[$input])); // Confirmed: no curly braces used, no changes needed
+        strlen(trim($details[$input]));
         if(!isset($details[$input]) || strlen(trim($details[$input])) === 0){
-            $errors[$input] = "$input cannot be empty";
+            $errors[$input] = "$input cannot be empty"; // No changes needed here
         }
     }
 
-    if(count($errors) !== 0){
-        [false, $errors];
+    if(count($errors) !== 0){ 
+     return  [false, $errors];
     }
 
     return [true, $errors];
 }
+function returnLoginError(){
+    $errorString = "";  // Initialize $errorString to avoid "undefined variable" warning
+
+    if(isset($_GET["error"])){
+        if(is_array($_GET["error"])){
+            foreach($_GET["error"] as $error){
+                $errorString = $errorString . "<p><span class='label label-danger' >{$error}</span></p>";
+            }
+        }
+    }
+    else{
+        $error = $_GET["error"];
+        $errorString = "<p><span class='label label-danger' >" . $error . "</span></p>";
+    }
+
+    return $errorString; // Fixed return placement
+}
+
+
+function getPages(){
+    $dsn = "mysql:host=" . DATABASE_HOST . ";port=" . DATABASE_PORT . ";dbname=" . DATABASE_NAME;
+    $pdo = new PDO($dsn, DATABASE_USERNAME, DATABASE_PASSWORD);
+    
+    $sql = "SELECT id, title, body FROM pages";
+    $statement = $pdo->prepare($sql);
+    
+    $executed = $statement->execute();
+    
+    if (!$executed) {
+        print_r($statement->errorInfo());
+        exit("An error occurred executing statement");
+    }
+    
+    $result = $statement->fetchAll();
+    return $result;
+}
+
 ?>

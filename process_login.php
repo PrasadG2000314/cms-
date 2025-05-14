@@ -1,6 +1,6 @@
 <?php
-require_once("config.php");
-require_once("functions.php");
+require_once("/includes/config.php");
+require_once(__DIR__."/includes/function.php");
 
 
 
@@ -9,6 +9,9 @@ $username = $_POST["username"];
 $password = $_POST["password"];
 
 $validation = validateLogin($_POST);
+
+var_dump($validation);
+exit;
 
 if(!$validation[0]){
     $error = http_build_query(array("error" => $validation[1]));
@@ -34,7 +37,7 @@ if(count($user) === 0 || !password_verify($password, $user[0]["password"])){
 $user = $user[0];
 
 if(loginUser($user)){
-    echo "User is logged in";
+    header ("Location: /pages/index.php");
 }
 else {
     echo "Couldn't log in user";
